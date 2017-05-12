@@ -30,10 +30,6 @@ RUN apt-get update \
 ADD requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
-## Agrega getmails
-ADD get_mail.py /tmp/get_mail.py
-
-ADD Destacados.mbox /tmp/Destacados.mbox
-
-## Ejecuta
-CMD "python /tmp/get_mail.py /tmp/Destacados.mbox > /tmp/mailstuff.txt"
+## Agrega modulos
+ADD clustering.py /tmp/clustering.py
+ADD clustering_LDA.py /tmp/clustering_LDA.py
