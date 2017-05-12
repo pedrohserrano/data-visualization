@@ -3,6 +3,12 @@
 import sys
 import os
 import mailbox
+#from email import header
+#import re
+#import base64
+#import codecs
+#sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
+
 
 
 if __name__ == '__main__':
@@ -16,7 +22,15 @@ if __name__ == '__main__':
 	    ad_cc = msg['cc']
 	    ad_to = msg['to']
 	    subj = msg['Subject']
-	    return ad_from, ad_cc, ad_to, subj
+	    id_msg = msg["Message-ID"]
+	    #subj = re.sub(r"(=\?.*\?=)(?!$)", r"\1 ", msg['Subject'])
+	    #subj = header.decode_header(msg['Subject'])
+	    #subj=subj.encode('utf-8')
+	    #decoded = base64.b64decode(msg['Subject'])
+	    #decode the utf-8
+	    #subj = str(decoded, 'latin-1')
+
+	    return id_msg, ad_from, ad_cc, ad_to, subj
 	    #print (ad_from, ad_cc, ad_to, subj)
 
 	#get mail body
