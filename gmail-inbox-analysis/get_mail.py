@@ -8,10 +8,12 @@ import mailbox
 #import base64
 #import codecs
 #sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
-
+import subprocess
 
 
 if __name__ == '__main__':
+
+	subprocess.call['./get_todos_mails.sh']
 
 	mbox = mailbox.mbox(sys.argv[1])
 
