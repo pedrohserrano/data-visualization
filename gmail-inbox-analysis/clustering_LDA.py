@@ -1,11 +1,12 @@
 #!/Users/pedrohserrano/.pyenv/versions/3.4.2/bin/python3.4
 
 import sys
-
+import os
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import NMF, LatentDirichletAllocation
 
 import numpy as np
+import subprocess
 
 
 def print_top_words(model, feature_names, n_top_words):
@@ -17,8 +18,8 @@ def print_top_words(model, feature_names, n_top_words):
 
 
 
-n_features = 1000 # belive that max number of words
-n_topics = 5
+n_features = 10000 # belive that max number of words
+n_topics = 8
 n_top_words = 20
 
 if __name__ == "__main__":
@@ -77,3 +78,6 @@ if __name__ == "__main__":
     print("\nTopics in LDA model:")
     tf_feature_names = tf_vectorizer.get_feature_names()
     print_top_words(lda, tf_feature_names, n_top_words)
+
+
+
