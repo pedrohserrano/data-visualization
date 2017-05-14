@@ -1,12 +1,11 @@
-#!/Users/pedrohserrano/.pyenv/versions/3.4.2/bin/python3.4
+#!/usr/local/Cellar/python3/3.5.1/bin/python3
 
 import sys
-import os
+
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import NMF, LatentDirichletAllocation
 
 import numpy as np
-import subprocess
 
 
 def print_top_words(model, feature_names, n_top_words):
@@ -18,8 +17,8 @@ def print_top_words(model, feature_names, n_top_words):
 
 
 
-n_features = 10000 # belive that max number of words
-n_topics = 8
+n_features = 1000 # belive that max number of words
+n_topics = 10
 n_top_words = 20
 
 if __name__ == "__main__":
@@ -35,7 +34,7 @@ if __name__ == "__main__":
 
     # Use tf-idf features for NMF.
     print("Extracting tf-idf features for NMF...")
-    tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2,
+    tfidf_vectorizer = TfidfVectorizer(#max_df=0.95, min_df=2,
                                        max_features=n_features,
                                        stop_words='english')
     #t0 = time()
@@ -44,7 +43,7 @@ if __name__ == "__main__":
 
     # Use tf (raw term count) features for LDA.
     print("Extracting tf features for LDA...")
-    tf_vectorizer = CountVectorizer(max_df=0.95, min_df=2,
+    tf_vectorizer = CountVectorizer(#max_df=0.95, min_df=2,
                                     max_features=n_features,
                                     stop_words='english')
     #t0 = time()
@@ -78,6 +77,3 @@ if __name__ == "__main__":
     print("\nTopics in LDA model:")
     tf_feature_names = tf_vectorizer.get_feature_names()
     print_top_words(lda, tf_feature_names, n_top_words)
-
-
-

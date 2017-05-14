@@ -21,3 +21,11 @@ new_mbox.write(mbox)
 
 mbox_file.close()
 new_mbox.close()
+
+
+
+#output = str(output).strip('[]')
+	#new_file.write(output)
+	#new_file.close()
+
+	#new_file = open('mbox_messages.txt','w')

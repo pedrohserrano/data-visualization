@@ -3,6 +3,7 @@ FROM python:3.5-slim
 MAINTAINER Pedro V <pedrohserrano@me.com>
 
 ENV REFRESHED_AT 2017-05-12
+ENV PROJECT_NAME pipeline
 
 ## Upgrades
 RUN \
@@ -29,11 +30,19 @@ RUN apt-get update \
 ## Requerimientos
 ADD requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
+#pip install -r /${PROJECT_NAME}/requirements.txt
 
-## Agrega getmails
+## Agrega get files
 ADD get_mail.py /tmp/get_mail.py
+ADD get_querys.py /tmp/get_querys.py
+ADD get_coords.py /tmp/get_coords.py
 
-ADD 
+## Copiamos los scripts
+#ADD . /${PROJECT_NAME}/
+#WORKDIR /${PROJECT_NAME}
 
-## Ejecuta
+
+## Deja terminal abierta
 CMD [ "/bin/bash" ]
+
+#ENTRYPOINT [ "python", "/pipeline/script.py" ]

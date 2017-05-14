@@ -3,6 +3,7 @@ FROM python:3.5-slim
 MAINTAINER Pedro V <pedrohserrano@me.com>
 
 ENV REFRESHED_AT 2017-05-12
+ENV PROJECT_NAME pipeline
 
 ## Upgrades
 RUN \
@@ -33,3 +34,12 @@ RUN pip install -r /tmp/requirements.txt
 ## Agrega modulos
 ADD clustering.py /tmp/clustering.py
 ADD clustering_LDA.py /tmp/clustering_LDA.py
+
+## Copiamos los scripts
+#ADD . /${PROJECT_NAME}/
+#WORKDIR /${PROJECT_NAME}
+
+## Deja terminal abierta
+CMD [ "/bin/bash" ]
+
+#ENTRYPOINT [ "python", "/pipeline/script.py" ]
