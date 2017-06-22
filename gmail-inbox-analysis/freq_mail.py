@@ -6,18 +6,10 @@ import operator
 import mailbox
 import pandas as pd
 import numpy as np 
-#import matplotlib.pyplot as plt
-#import matplotlib.font_manager as fm
+
 from dateutil.parser import parse as parse_datetime
 
-
-#family = 'serif'
-#title_font = fm.FontProperties(family=family, style='normal', size=20, weight='normal', stretch='normal')
-#label_font = fm.FontProperties(family=family, style='normal', size=16, weight='normal', stretch='normal')
-#ticks_font = fm.FontProperties(family=family, style='normal', size=12, weight='normal', stretch='normal')
-
 # Define la función para obtener las fechas, excluyendo los chats
-
 def get_dates(mbox):
 	all_dates = []
 	all_times = []
@@ -38,15 +30,16 @@ def get_dates(mbox):
 
 
 # Toma el archivo
-mbox = mailbox.mbox(sys.argv[1])
-print('There are {:,} messages in the archive.'.format(len(mbox)))
+path = '/Users/pedrohserrano/google-takeout/Mail/Destacados.mbox'
+mbox = mailbox.mbox(path)
+#mbox = mailbox.mbox(sys.argv[1])
+print('Hay {:,} mensajes.'.format(len(mbox)))
 
-all_dates, all_times = get_dates(mbox)
-#print (all_dates[:10], all_times[:10]) funciona la funcioón y regresa las fechas y eso
-
+#Extrae todas las fechas y las horas
+all_times, all_dates = get_dates(mbox)
 # Se hace un count por día
 date_counts = pd.Series(all_dates).value_counts().sort_index()
-print('There are {:,} dates with messages.'.format(len(date_counts)))
+print('Hay {:,} fechas con mensajes.'.format(len(date_counts)))
 #date_counts.head()
 
 # No todas los día debe haber un mensaje, se llenan esos huecos con ceros
@@ -54,28 +47,15 @@ print('There are {:,} dates with messages.'.format(len(date_counts)))
 date_range = pd.date_range(start='2011-01-01', end='2017-01-01', freq='D')
 index = date_range.map(lambda x: str(x.date()))
 date_counts = date_counts.reindex(index, fill_value=0)
-print('There are {:,} dates total in the range, with or without messages.'.format(len(date_counts)))
-#date_counts.head()
+#print('There are {:,} dates total in the range, with or without messages.'.format(len(date_counts)))
+#print(date_counts.head())
+
+date_counts.to_csv('date_counts.csv', encoding='utf-8')
 
 # create a series of labels for the plot: each new year's day
 xlabels = pd.Series([label if '01-01' in label else None for label in date_counts.index])
 xlabels = xlabels[pd.notnull(xlabels)]
-#xlabels.head()
-
-
-#aquí en vez de la imagen es hacer un dataframe que coma shiny
-# plot the counts per day
-#fig = plt.figure(figsize=[15, 5])
-#ax = date_counts.plot(kind='line', linewidth=0.5, alpha=0.5, color='g')
-
-#ax.grid(True)
-#ax.set_xticks(xlabels.index)
-#ax.set_xticklabels(xlabels, rotation=35, rotation_mode='anchor', ha='right', fontproperties=ticks_font)
-#ax.set_ylabel('Number of emails', fontproperties=label_font)
-#ax.set_title('Sent mails traffic per day', fontproperties=title_font)
-
-#fig.tight_layout()
-#fig.savefig('images/gmail-traffic-day-destacados.png', dpi=96)
+print(xlabels.head())
 
 # Ahora se observ por mes
 all_months = [x[:-3] for x in all_dates]
@@ -89,27 +69,11 @@ index = np.unique(months_range)
 month_counts = month_counts.reindex(index, fill_value=0)
 month_counts = pd.Series(all_months).value_counts().sort_index()
 
+month_counts.to_csv('month_counts.csv', encoding='utf-8')
 # create a series of labels for the plot: each january
-xlabels = pd.Series([label if '-01' in label else None for label in month_counts.index])
-xlabels = xlabels[pd.notnull(xlabels)]
-#xlabels.head()
-
-
-
-# plot the counts per month
-#fig = plt.figure(figsize=[15, 5])
-#ax = month_counts.plot(kind='line', linewidth=2.5, alpha=0.6, color='g', marker='+', markeredgecolor='g')
-
-#ax.grid(True)
-#ax.set_xticks(xlabels.index)
-#ax.set_xticklabels(xlabels, rotation=35, rotation_mode='anchor', ha='right', fontproperties=ticks_font)
-#ax.set_ylabel('Number of emails', fontproperties=label_font)
-#ax.set_title('Sent mail traffic per month', fontproperties=title_font)
-
-#fig.tight_layout()
-#fig.savefig('images/gmail-traffic-month.png', dpi=96)
-#plt.show()
-
+xlabels1 = pd.Series([label if '-01' in label else None for label in month_counts.index])
+xlabels1 = xlabels[pd.notnull(xlabels)]
+print(xlabels1.head())
 
 # Por día de la semana
 
@@ -118,6 +82,7 @@ day_counts = pd.DataFrame()
 day_counts['count'] = date_counts
 day_counts['day_of_week'] = date_counts.index.map(lambda x: parse_datetime(x).weekday())
 mean_day_counts = day_counts.groupby('day_of_week')['count'].mean()
-xlabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-#print (date_counts)
+xlabels2 = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+mean_day_counts.to_csv('mean_day_counts.csv', encoding='utf-8')
